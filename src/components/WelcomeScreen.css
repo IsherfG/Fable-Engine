@@ -1,0 +1,76 @@
+/* WelcomeScreen.css */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #ffffff;
+    font-family: "Cinzel", serif;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .welcome-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  
+  .start-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    color: #ffffff;
+    background-color: #ff8c00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .welcome-title {
+      font-size: 2.5rem;
+    }
+  
+    .welcome-subtitle {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    .start-button {
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .welcome-title {
+      font-size: 2rem;
+    }
+  
+    .welcome-subtitle {
+      font-size: 0.9rem;
+    }
+  
+    .start-button {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
