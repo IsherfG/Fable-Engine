@@ -5,7 +5,7 @@ import "./WelcomeScreen.css";
 const WelcomeScreen = ({ onStart }) => {
   return (
     <div className="welcome-container">
-      <h1 className="welcome-title">Welcome to AI Dungeon Master</h1>
+      <h1 className="welcome-title">Welcome to Fable Engine</h1>
       <p className="welcome-subtitle">
         Embark on a journey where your imagination drives the story!
       </p>
