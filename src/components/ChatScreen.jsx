@@ -194,7 +194,7 @@ const ChatScreenWithLevel = () => {
             {/* Chat Section */}
             <div className="chat-container">
                 <div className="chat-header">
-                    <h1>Welcome to AI Dungeon Master</h1>
+                    <h1>FABLE ENGINE v0.1</h1>
                 </div>
                 <div className="chat-messages">
                     {messages.map((msg, index) => (
