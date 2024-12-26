@@ -1,5 +1,3 @@
-/* ChatScreenWithLevel.css */
-
 /* General Layout */
 .chat-level-container {
   display: flex;
@@ -27,9 +25,12 @@
   font-size: 1.8rem;
   text-align: center;
   background: linear-gradient(135deg, #333, #1a1a1a);
-  color: #ffd700; /* Gold for a regal feel */
+  color: #ffd700;
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.8), 0 0 2px rgba(255, 69, 0, 0.6);
   border-bottom: 1px solid #555;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .chat-messages {
@@ -38,25 +39,23 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 /* Chat Message Container */
 .chat-messages .message-container {
   display: flex;
-  align-items: flex-start; /* Align items to the top */
-  margin-bottom: 1rem;
+  align-items: flex-start;
 }
 
 .chat-messages .message-container.user {
-  flex-direction: row-reverse; /* Put user profile on the right */
-  justify-content: flex-start; /* Align content to the start after reversal */
-  display: inline-flex; /* Make user message container inline-flex */
+  flex-direction: row-reverse;
+  justify-content: flex-start;
 }
 
 .chat-messages .message-container.ai {
-  flex-direction: row; /* Put AI profile on the left */
-  justify-content: flex-start; /* Align content to the start */
-   display: inline-flex; /* Make AI message container inline-flex */
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 /* Profile Image */
@@ -65,27 +64,22 @@
   height: 40px;
   border-radius: 50%;
   margin: 0 0.5rem;
-  object-fit: cover; /* Ensure the image fills the circle */
-}
-
-.chat-messages .message-container.user .profile-image {
-  /* Add specific styling if needed */
-}
-
-.chat-messages .message-container.ai .profile-image {
-  /* Add specific styling if needed */
+  object-fit: cover;
 }
 
 /* Chat Message Styles */
 .chat-messages .message {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: #222;
-  color: #d3d3d3;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-  display: inline-block;
-  max-width: 70%; /* Limit message box width */
-  word-wrap: break-word;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: #222;
+    color: #d3d3d3;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+    display: inline-flex; /* Changed to inline-flex */
+    max-width: 70%;
+    word-wrap: break-word;
+    align-items: flex-start;
+    justify-content: space-between; /* Added justify-content to manage timestamp */
+    flex-direction: column; /* Added to stack content and timestamp */
 }
 
 .chat-messages .user .message {
@@ -100,32 +94,26 @@
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
-/* Keyframes for Animations */
-@keyframes fadeIn {
-  0% {
-      opacity: 0;
-  }
-  100% {
-      opacity: 1;
-  }
+
+/* NPC Name Style */
+.chat-messages .message .npc-name {
+   font-weight: bold;
+   display: block;
+    margin-bottom: 5px;
 }
 
-@keyframes slideIn {
-  0% {
-      transform: translateY(20px);
-  }
-  100% {
-      transform: translateY(0);
-  }
+/* Narrator Style */
+.chat-messages .message.narrator p {
+  font-style: italic;
 }
 
 /* Timestamp */
 .chat-messages .timestamp {
-  font-size: 0.75rem;
-  color: #888;
-  text-align: right;
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
-  display: block; /* Ensure timestamp is below the text */
+    font-size: 0.75rem;
+    color: #888;
+    text-align: right;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
+    display: block;
 }
 
 /* Chat Input */
@@ -166,22 +154,24 @@
 .chat-input input:focus,
 .chat-input button:focus {
   outline: none;
-  border-color: #ffd700; /* Highlight with gold */
+  border-color: #ffd700;
 }
 
 /* Level Info */
 .level-info {
-  flex-shrink: 0;
-  padding: 1rem;
-  background: linear-gradient(135deg, #1a1a1a, #262626);
-  color: #e0dccc;
-  width: 300px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    flex-shrink: 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1a1a1a, #262626);
+    color: #e0dccc;
+    width: 300px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    overflow-y: auto; /* Make level info scrollable */
 }
+
 
 .level-info h2 {
   margin-bottom: 1rem;
-  color: #ffd700; /* Gold header */
+  color: #ffd700;
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
 }
 
@@ -232,7 +222,7 @@
 
 .character-stats h3 {
   margin-bottom: 10px;
-  color: #ffd700; /* Gold header */
+  color: #ffd700;
   text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
 }
 
@@ -254,12 +244,6 @@
 
 .full-screen-chat .level-info {
   display: none;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .toggle-stats-button {
@@ -289,6 +273,7 @@
   border: 2px solid #0078d4;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(30, 144, 255, 0.6);
+  object-fit: cover;
 }
 
 /* Map Area */
@@ -318,38 +303,71 @@
 }
 
 .map-content {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+     max-height: 300px; /* Added max-height */
 }
+
 
 .game-map-image {
   max-width: 100%;
   height: auto;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Optional border shadow */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Inventory Container */
+.inventory-container {
+  margin-top: 20px;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+}
+  
+.inventory-container h3 {
+  margin-bottom: 10px;
+  color: #ffd700;
+  text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
+}
+
+/* Inventory Slots */
+.inventory-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.inventory-slot {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #222;
+  width: fit-content;
+  text-align: center;
 }
 
 /* Mobile Specific */
 @media (max-width: 768px) {
   .chat-level-container {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .level-info {
-      width: 100%;
+    width: 100%;
   }
 
   .character-profile-image img {
-      max-width: 80%;
-      max-height: 100px;
+    max-width: 80%;
+    max-height: 100px;
   }
 
-  .chat-container {
-      height: 80vh;
-      overflow-y: auto;
-  }
+    .chat-container {
+        height: 80vh;
+        overflow-y: auto;
+    }
+
 
   .level-info {
       width: 100%;
