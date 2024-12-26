@@ -59,3 +59,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📸 Screenshots
 
+<img width="1701" alt="Screenshot 2024-12-26 at 9 10 03 PM" src="https://github.com/user-attachments/assets/e37f5057-db07-4739-98e1-748e7bfb2fae" />
+
+
