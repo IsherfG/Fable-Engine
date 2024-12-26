@@ -1,23 +1,25 @@
-// App.js
 import React, { useState } from "react";
+import CharacterCreator from "./components/CharacterCreator";
+import ChatScreenWithLevel from "./components/ChatScreen";
 import WelcomeScreen from "./components/WelcomeScreen";
-import ChatScreen from "./components/ChatScreen";
 
 const App = () => {
-  const [gameStarted, setGameStarted] = useState(false);
+  const [screen, setScreen] = useState("welcome");
+  const [character, setCharacter] = useState(null);
 
-  const handleStart = () => {
-    setGameStarted(true);
-    // Navigate to the game or load your main app here
+  const handleStartAdventure = () => setScreen("character-creator");
+  const handleCharacterCreation = (charData) => {
+    setCharacter(charData);
+    setScreen("chat");
   };
 
   return (
     <div>
-      {gameStarted ? (
-        <ChatScreen/>
-      ) : (
-        <WelcomeScreen onStart={handleStart} />
+      {screen === "welcome" && <WelcomeScreen onStart={handleStartAdventure} />}
+      {screen === "character-creator" && (
+        <CharacterCreator onFinish={handleCharacterCreation} />
       )}
+      {screen === "chat" && <ChatScreenWithLevel character={character} />}
     </div>
   );
 };
