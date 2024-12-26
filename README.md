@@ -54,9 +54,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 🔗 Links
 
-*   **Live Demo** (If you have a deployed version): [Link to your deployed version]
-*   **Report issues:** [Link to your repository's issue tracker]
+*   **Live Demo** (If you have a deployed version): https://fable-engine.vercel.app
+*   **Report issues:** (https://github.com/IsherfG/Fable-Engine/issues
 
 ## 📸 Screenshots
 
-![Uploading Screenshot 2024-12-26 at 9.10.03 PM.png…]()
