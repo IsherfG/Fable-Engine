@@ -1,5 +1,5 @@
 // ChatScreenWithLevel.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ChatScreen.css";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import defaultAIProfile from '../assets/defaultAIProfile.png';
@@ -19,6 +19,7 @@ const ChatScreenWithLevel = ({ character }) => {
     });
     const [showStats, setShowStats] = useState(true);
     const [showMap, setShowMap] = useState(false);
+      const levelInfoRef = useRef(null);
 
     // Inventory state, using an object to store both slots and items
     const [inventory, setInventory] = useState({
@@ -287,45 +288,47 @@ const ChatScreenWithLevel = ({ character }) => {
 
     const handleGoCommand = (input) => {
         const destination = input.substring(3).trim();
-        if (gameData.locations[location.name].connections.includes(destination)) {
-            const newLocation = gameData.locations[destination];
-            setLocation(newLocation);
-            return {
-                text: `As you travel to ${newLocation.name}, you find yourself in ${newLocation.description}.`,
-                sender: "ai",
+        const currentLocation = gameData.locations[location.name]
+           if (currentLocation && currentLocation.connections.includes(destination)) {
+             const newLocation = gameData.locations[destination];
+               setLocation(newLocation);
+              return  {
+                 text: `As you travel to ${newLocation.name}, you find yourself in ${newLocation.description}.`,
+                 sender: "ai",
                 timestamp: new Date(),
                 type: "narrator"
             };
-        } else {
+          } else {
             return {
-                text: `You cannot go to ${destination} from your current location.`,
+               text: `You cannot go to ${destination} from your current location.`,
                 sender: "ai",
                 timestamp: new Date(),
-                type: "narrator"
+                 type: "narrator"
             };
-        }
+          }
     };
 
     const handleAttackCommand = (input) => {
-        const target = input.substring(7).trim();
-
-        if (gameData.locations[location.name].enemies.includes(target)) {
-            return {
-                text: `You attack the ${target}. (attack logic will be added later).`,
-                sender: "ai",
-                timestamp: new Date(),
-                type: "narrator"
-            }
-
-        } else {
-            return {
-                text: `There is no ${target} in this location to attack.`,
-                sender: "ai",
-                timestamp: new Date(),
-                type: "narrator"
-            }
-        }
-    }
+          const target = input.substring(7).trim();
+          const currentLocation = gameData.locations[location.name]
+           if (currentLocation && currentLocation.enemies.includes(target)) {
+              // Basic damage calculation (static for now)
+              const damage = Math.floor(Math.random() * 5) + 1; // Random from 1-5
+                 return {
+                    text: `You attack the ${target} and do ${damage} damage. (attack logic will be added later).`,
+                    sender: "ai",
+                     timestamp: new Date(),
+                    type: "narrator"
+                }
+          } else {
+                 return {
+                    text: `There is no ${target} in this location to attack.`,
+                     sender: "ai",
+                    timestamp: new Date(),
+                     type: "narrator"
+                }
+           }
+    };
 
     const handleUseCommand = (input) => {
         const item = input.substring(4).trim();
@@ -336,14 +339,14 @@ const ChatScreenWithLevel = ({ character }) => {
         for (let key in inventory) {
             if (inventory[key]?.name === item) {
                 found = true;
-                // Perform action based on the item
+                 // Perform action based on the item
                 // add logic here.
-                return {
+                 return {
                     text: `You use ${item}. The effect will be added later.`,
                     sender: "ai",
-                    timestamp: new Date(),
-                    type: "narrator"
-                }
+                     timestamp: new Date(),
+                      type: "narrator"
+                  }
             }
         }
 
@@ -361,28 +364,28 @@ const ChatScreenWithLevel = ({ character }) => {
         const target = input.substring(5).trim();
         if (gameData.npcs[target] && gameData.npcs[target].location === location.name) {
             const npc = gameData.npcs[target];
-            try {
-                const prompt = `You are a fantasy dungeon master, experienced in running tabletop role-playing games.
+             try {
+                const prompt =  `You are a fantasy dungeon master, experienced in running tabletop role-playing games.
                 The player is in location ${location.name}.
                 The player wants to talk to ${npc.description} located in ${location.name}.
                 The npc should respond as the npc would in this setting. Avoid describing the character you are playing,
                 and use plain text without any asterisks or other markdown formatting. The npc's greeting is ${npc.greeting}. The player's input is: ${input} `;
-                const result = await model.generateContent(prompt);
-                const response = await result.response;
-                let text = response.text();
-                text = removeFormattingCharacters(text);
-                return { text: text, sender: "ai", timestamp: new Date(), type: "npc", npcName: target };
-            } catch (error) {
-                console.error("Gemini API error:", error);
-                return {
+                 const result = await model.generateContent(prompt);
+                 const response = await result.response;
+                 let text = response.text();
+                 text = removeFormattingCharacters(text);
+                 return { text: text, sender: "ai", timestamp: new Date(), type: "npc", npcName: target };
+             } catch (error) {
+                 console.error("Gemini API error:", error);
+                  return {
                     text: "Sorry, I am having trouble with that right now.",
                     sender: "ai",
                     timestamp: new Date(),
-                };
-            }
+                 };
+             }
 
         } else {
-            return {
+             return {
                 text: `There is no one named ${target} to talk to here.`,
                 sender: "ai",
                 timestamp: new Date(),
@@ -391,11 +394,17 @@ const ChatScreenWithLevel = ({ character }) => {
         }
     };
 
+    const handleStatsTouchStart = (e) => {
+      if (levelInfoRef.current && levelInfoRef.current.contains(e.target)) {
+        e.stopPropagation();
+      }
+    };
+
     return (
         <div className={`chat-level-container ${showStats ? "" : "full-screen-chat"}`}>
             <div className="chat-container">
                 <div className="chat-header">
-                    <h1>FABLE ENGINE v0.1</h1>
+                    <h1>FABLE ENGINE v0.1a</h1>
                     {/* Show "Show Stats" button in chat-header on mobile when stats are hidden */}
                     {window.innerWidth <= 768 && !showStats && (
                         <button
@@ -451,7 +460,7 @@ const ChatScreenWithLevel = ({ character }) => {
                 </div>
             </div>
             {showStats && (
-                <div className="level-info">
+                <div className="level-info" ref={levelInfoRef} onTouchStart={handleStatsTouchStart}>
                     <div className="level-info-header">
                         <h2>Level 1</h2>
                         {/* Show "Hide Stats" button in level-info header on mobile only if stats are shown */}
