@@ -4,83 +4,82 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 1rem;
+  min-height: 100vh;
+   padding: 0.5rem;
   background: radial-gradient(circle, #0d0d0d 70%, #1e1e1e 100%);
-  color: #e0dccc; /* Soft parchment-like color for text */
+  color: #e0dccc;
   font-family: "Cinzel", serif;
   text-align: center;
   box-sizing: border-box;
 }
-
 .welcome-title {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 4px rgba(255, 69, 0, 0.6);
-  letter-spacing: 2px;
+font-size: 4rem;
+margin-bottom: 1rem;
+text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 4px rgba(255, 69, 0, 0.6);
+letter-spacing: 2px;
 }
 
 .welcome-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 2.5rem;
-  max-width: 600px;
-  line-height: 1.8;
-  color: #d3d3d3; /* Muted color for a softer glow */
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+font-size: 1.5rem;
+margin-bottom: 2.5rem;
+max-width: 600px;
+line-height: 1.8;
+color: #d3d3d3;
+text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
 .start-button {
-  padding: 0.85rem 2rem;
-  font-size: 1.5rem;
-  color: #ffffff;
-  background: linear-gradient(135deg, #b22222, #ff4500);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(255, 69, 0, 0.6), 0 0 15px rgba(255, 140, 0, 0.5);
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+padding: 0.85rem 2rem;
+font-size: 1.5rem;
+color: #ffffff;
+background: linear-gradient(135deg, #b22222, #ff4500);
+border: none;
+border-radius: 8px;
+cursor: pointer;
+box-shadow: 0 0 10px rgba(255, 69, 0, 0.6), 0 0 15px rgba(255, 140, 0, 0.5);
+transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
 .start-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 69, 0, 0.9), 0 0 30px rgba(255, 165, 0, 0.7);
-  background: linear-gradient(135deg, #ff6347, #ffa07a);
+transform: scale(1.1);
+box-shadow: 0 0 20px rgba(255, 69, 0, 0.9), 0 0 30px rgba(255, 165, 0, 0.7);
+background: linear-gradient(135deg, #ff6347, #ffa07a);
 }
 
 .start-button:active {
-  transform: scale(0.95);
-  background: linear-gradient(135deg, #8b0000, #b22222);
-  box-shadow: 0 0 5px rgba(139, 0, 0, 0.8);
+transform: scale(0.95);
+background: linear-gradient(135deg, #8b0000, #b22222);
+box-shadow: 0 0 5px rgba(139, 0, 0, 0.8);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .welcome-title {
-    font-size: 3rem;
-  }
+.welcome-title {
+  font-size: 3rem;
+}
 
-  .welcome-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-  }
+.welcome-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
 
-  .start-button {
-    padding: 0.7rem 1.5rem;
-    font-size: 1.25rem;
-  }
+.start-button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1.25rem;
+}
 }
 
 @media (max-width: 480px) {
-  .welcome-title {
-    font-size: 2.5rem;
-  }
+.welcome-title {
+  font-size: 2.5rem;
+}
 
-  .welcome-subtitle {
-    font-size: 1rem;
-  }
+.welcome-subtitle {
+  font-size: 1rem;
+}
 
-  .start-button {
-    padding: 0.6rem 1.25rem;
-    font-size: 1rem;
-  }
+.start-button {
+  padding: 0.6rem 1.25rem;
+  font-size: 1rem;
+}
 }
