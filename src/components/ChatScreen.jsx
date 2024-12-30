@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "./ChatScreen.css";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import defaultAIProfile from '../assets/defaultAIProfile.png';
-import gameData from '../data/gameData'; // Import game data
-import gameInstructions from '../data/gameInstructions'; // Import instructions
+import gameData from '../data/gameData';
+import gameInstructions from '../data/gameInstructions';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -15,40 +15,43 @@ const ChatScreenWithLevel = ({ character }) => {
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
+      const [playerHealth, setPlayerHealth] = useState(100); // Player Health
+    const [inCombat, setInCombat] = useState(false); // is player in combat
+   const [currentEnemy, setCurrentEnemy] = useState(null); // current enemy in combat
     const [location, setLocation] = useState({
         name: "Oakhaven",
-        sublocation: "Town Gate",
+         sublocation: "Town Gate",
         description: "a small town known for its old ruins",
     });
     const [showStats, setShowStats] = useState(true);
     const [showMap, setShowMap] = useState(false);
     const levelInfoRef = useRef(null);
-    const speechRef = useRef(null);
+   const speechRef = useRef(null);
 
-    // Inventory state, using an object to store both slots and items
-    const [inventory, setInventory] = useState({
+    // Inventory state
+     const [inventory, setInventory] = useState({
         armor: {
-            name: "Basic Armor",
-            description: "A simple set of leather armor"
+             name: "Basic Armor",
+           description: "A simple set of leather armor"
         },
         helmet: null,
-        pants: null,
+       pants: null,
         shoe: null,
         weapon1: {
-            name: "Rusty Sword",
-            description: "A weathered blade that is reliable but not powerful",
+             name: "Rusty Sword",
+             description: "A weathered blade that is reliable but not powerful",
         },
-        weapon2: null,
-        item1: {
+       weapon2: null,
+         item1: {
             name: "Small Health Potion",
             description: "A small vial containing healing liquid",
-        },
+       },
         item2: {
             name: "Small Health Potion",
-            description: "A small vial containing healing liquid",
-        },
+             description: "A small vial containing healing liquid",
+       },
         item3: null,
-        item4: null,
+         item4: null,
     });
 
     const initialSystemInstructions = gameInstructions.initialSystemInstructions
@@ -75,13 +78,13 @@ const ChatScreenWithLevel = ({ character }) => {
     The player is currently in ${location.name}, ${location.sublocation}, ${location.description}. Available locations are: ${Object.keys(
         gameData.locations
     ).join(", ")}
-     Available sublocations for the current area are: ${Object.keys(gameData.locations[location.name].sublocations).join(", ")}
-     Available npcs: ${gameData.locations[location.name]?.npcs?.join(", ") || "none"}. Available items: ${Object.keys(gameData.items).join(", ")}
+    Available sublocations for the current area are: ${Object.keys(gameData.locations[location.name].sublocations).join(", ")}
+    Available npcs: ${gameData.locations[location.name]?.npcs?.join(", ") || "none"}. Available items: ${Object.keys(gameData.items).join(", ")}
     `;
 
     useEffect(() => {
         const initialMessage = {
-            text: "Welcome to the world of adventure! Introduce yourself to begin.",
+             text: "Welcome to the world of adventure! Introduce yourself to begin.",
             sender: "ai",
             timestamp: new Date(),
         };
@@ -90,7 +93,7 @@ const ChatScreenWithLevel = ({ character }) => {
 
     useEffect(() => {
         const handleResize = () => {
-           setShowStats(window.innerWidth > 768);
+            setShowStats(window.innerWidth > 768);
         };
         handleResize(); // Set initial state
         window.addEventListener("resize", handleResize);
@@ -101,7 +104,7 @@ const ChatScreenWithLevel = ({ character }) => {
         return text.replace(/\*\*|\*/g, '');
     }
 
-    const initializeSpeech = () => {
+ const initializeSpeech = () => {
       if ('speechSynthesis' in window) {
        return window.speechSynthesis
      } else {
@@ -124,6 +127,7 @@ const ChatScreenWithLevel = ({ character }) => {
              speechRef.current = utterance;
            synth.speak(utterance);
      }
+
 
     const sendMessage = async () => {
         if (!input.trim()) return;
@@ -151,14 +155,14 @@ const ChatScreenWithLevel = ({ character }) => {
                 let text = response.text();
                 text = removeFormattingCharacters(text);
                 const aiResponse = { text: text, sender: "ai", timestamp: new Date() };
-                setMessages((prev) => [...prev, aiResponse]);
-                   speak(text);
+                 setMessages((prev) => [...prev, aiResponse]);
+                  speak(text);
             } catch (error) {
                 console.error("Gemini API error:", error);
                 const errorMessage = {
                     text: "Sorry, I am having trouble with that right now.",
                     sender: "ai",
-                    timestamp: new Date(),
+                     timestamp: new Date(),
                 };
                 setMessages((prev) => [...prev, errorMessage]);
             } finally {
@@ -170,32 +174,43 @@ const ChatScreenWithLevel = ({ character }) => {
         let processedResponse = null;
 
         // Check for commands
-         if (input.toLowerCase().startsWith("go to ")) {
-           processedResponse = handleGoCommand(input);
-         } else if (input.toLowerCase().startsWith("where am i")) {
+        if (inCombat){
+            if (input.toLowerCase().startsWith("attack")) {
+                processedResponse = await handleCombatTurn(input);
+            } else {
+                 processedResponse = {
+                    text: "You are in combat, you can only attack.",
+                    sender: "ai",
+                    timestamp: new Date(),
+                    type: "narrator"
+                 }
+            }
+        } else if (input.toLowerCase().startsWith("go to ")) {
+            processedResponse = handleGoCommand(input);
+        } else if (input.toLowerCase().startsWith("where am i")) {
             processedResponse = handleWhereAmICommand();
         }  else if (input.toLowerCase().startsWith("talk ")) {
             processedResponse = await handleTalkCommand(input);
         }
         else if (input.toLowerCase().startsWith("attack ")) {
-            processedResponse = handleAttackCommand(input);
-        } else if (input.toLowerCase().startsWith("use ")) {
+          processedResponse = await handleAttackCommand(input);
+       }else if (input.toLowerCase().startsWith("use ")) {
             processedResponse = handleUseCommand(input);
         } else {
             // Handle as regular message
-            prompt += `\n${systemInstructions}\nPlayer Input: ${input}\n`;
-            try {
+             prompt += `\n${systemInstructions}\nPlayer Input: ${input}\n`;
+           try {
                 const result = await model.generateContent(prompt);
                 const response = await result.response;
                 let text = response.text();
-                text = removeFormattingCharacters(text);
+                 text = removeFormattingCharacters(text);
                 processedResponse = { text: text, sender: "ai", timestamp: new Date(), type: "narrator" };
-                   speak(text);
+                speak(text);
             } catch (error) {
                 console.error("Gemini API error:", error);
                 processedResponse = {
                     text: "Sorry, I am having trouble with that right now.",
-                    sender: "ai",
+                     sender: "ai",
                     timestamp: new Date(),
                 };
             }
@@ -204,162 +219,221 @@ const ChatScreenWithLevel = ({ character }) => {
         if (processedResponse) {
             setMessages((prev) => [...prev, processedResponse]);
              if (processedResponse.type !== "user") {
-                speak(processedResponse.text);
+                  speak(processedResponse.text);
             }
         }
         setIsTyping(false);
     };
 
-  const handleGoCommand = (input) => {
+   const handleGoCommand = (input) => {
         const destination = input.substring(6).trim().toLowerCase();
         let newLocation = null;
 
         if (gameData.locations[location.name].sublocations) {
-            const sublocationKeys = Object.keys(gameData.locations[location.name].sublocations).map(key => key.toLowerCase());
+             const sublocationKeys = Object.keys(gameData.locations[location.name].sublocations).map(key => key.toLowerCase());
             if (sublocationKeys.includes(destination)) {
                 const sublocationName = Object.keys(gameData.locations[location.name].sublocations)[sublocationKeys.indexOf(destination)];
-               newLocation = { ...location, sublocation: sublocationName, description: gameData.locations[location.name].sublocations[sublocationName].description };
-          }
+              newLocation = { ...location, sublocation: sublocationName, description: gameData.locations[location.name].sublocations[sublocationName].description };
+            }
         }
 
-        if (!newLocation) {
+       if (!newLocation) {
            const locationKeys = Object.keys(gameData.locations).map(key => key.toLowerCase());
-            if (locationKeys.includes(destination)) {
-                 if (gameData.locations[location.name].connections.includes(Object.keys(gameData.locations)[locationKeys.indexOf(destination)]))
-                   {
-                     const locationName = Object.keys(gameData.locations)[locationKeys.indexOf(destination)]
+           if (locationKeys.includes(destination)) {
+              if (gameData.locations[location.name].connections.includes(Object.keys(gameData.locations)[locationKeys.indexOf(destination)]))
+                  {
+                      const locationName = Object.keys(gameData.locations)[locationKeys.indexOf(destination)]
                      newLocation = {name: locationName, sublocation: Object.keys(gameData.locations[locationName].sublocations)[0], description: gameData.locations[locationName].sublocations[Object.keys(gameData.locations[locationName].sublocations)[0]].description};
-                }
+               }
             }
         }
 
         if(newLocation){
             setLocation(newLocation);
-              return  {
-                 text: `As you travel to ${newLocation.sublocation}, you find yourself in ${newLocation.description}.`,
-                 sender: "ai",
-                timestamp: new Date(),
-                type: "narrator"
+            return  {
+                text: `As you travel to ${newLocation.sublocation}, you find yourself in ${newLocation.description}.`,
+                sender: "ai",
+                 timestamp: new Date(),
+                 type: "narrator"
             };
         } else {
             return {
                 text: `You cannot go to ${destination} from your current location.`,
-                sender: "ai",
-                timestamp: new Date(),
+                 sender: "ai",
+               timestamp: new Date(),
                 type: "narrator"
             };
         }
     };
 
-     const handleWhereAmICommand = () => {
+
+    const handleWhereAmICommand = () => {
         return {
             text: `You are currently in ${location.name}, ${location.sublocation}, ${location.description}.`,
-            sender: "ai",
-            timestamp: new Date(),
+             sender: "ai",
+           timestamp: new Date(),
             type: "narrator"
         };
     };
 
-    const handleAttackCommand = (input) => {
-          const target = input.substring(7).trim();
-          const currentLocation = gameData.locations[location.name]
-           if (currentLocation && currentLocation.enemies.includes(target)) {
-              // Basic damage calculation (static for now)
-              const damage = Math.floor(Math.random() * 5) + 1; // Random from 1-5
-                 return {
-                    text: `You attack the ${target} and do ${damage} damage. (attack logic will be added later).`,
-                    sender: "ai",
-                     timestamp: new Date(),
-                    type: "narrator"
-                }
-          } else {
-                 return {
-                    text: `There is no ${target} in this location to attack.`,
-                     sender: "ai",
-                    timestamp: new Date(),
-                     type: "narrator"
-                }
-           }
+
+    const handleAttackCommand = async (input) => {
+        const target = input.substring(7).trim();
+         const currentLocation = gameData.locations[location.name]
+         if (currentLocation && currentLocation.enemies.includes(target)) {
+            // Start combat
+            setCurrentEnemy(target);
+            setInCombat(true);
+             return {
+                text: `You have engaged in combat with a ${target}!`,
+                sender: "ai",
+                 timestamp: new Date(),
+                type: "narrator"
+            };
+
+         } else {
+            return {
+               text: `There is no ${target} in this location to attack.`,
+               sender: "ai",
+               timestamp: new Date(),
+               type: "narrator"
+            }
+        }
     };
 
-    const handleUseCommand = (input) => {
+
+      const handleCombatTurn = async (input) => {
+        if (!currentEnemy) return;
+
+        // Get enemy data
+        const enemyData = gameData.enemies[currentEnemy];
+           if(!enemyData?.isAlive) {
+            setInCombat(false);
+             return {
+                text: `The ${currentEnemy} is already defeated.`,
+                 sender: "ai",
+               timestamp: new Date(),
+                 type: "narrator"
+            }
+        }
+        //Player attack logic
+        const damage = Math.floor(Math.random() * 5) + 1; // Random from 1-5
+
+          let combatText = `You attack the ${currentEnemy} and do ${damage} damage.\n`;
+            enemyData.health -= damage;
+          if(enemyData.health <= 0){
+             enemyData.isAlive = false;
+              setInCombat(false);
+            return {
+                text: combatText + `The ${currentEnemy} has been defeated!`,
+                sender: "ai",
+                 timestamp: new Date(),
+                 type: "narrator"
+            };
+        }
+
+
+        //Enemy turn
+          combatText += `The ${currentEnemy} attacks you, dealing ${enemyData.damage} damage. \n`;
+          setPlayerHealth((prev) => prev - enemyData.damage);
+
+          if (playerHealth - enemyData.damage <= 0) {
+               setInCombat(false);
+               setPlayerHealth(0);
+                return {
+                     text: combatText + `You have been defeated, game over!`,
+                     sender: "ai",
+                     timestamp: new Date(),
+                      type: "narrator"
+                };
+            }
+             return {
+               text: combatText + `Your current health is ${playerHealth}.`,
+               sender: "ai",
+                 timestamp: new Date(),
+                type: "narrator"
+            };
+    };
+
+
+   const handleUseCommand = (input) => {
         const item = input.substring(4).trim();
 
         // Check if the item is in the inventory
         let found = false;
 
         for (let key in inventory) {
-            if (inventory[key]?.name === item) {
-                found = true;
+             if (inventory[key]?.name === item) {
+                 found = true;
                  // Perform action based on the item
-                // add logic here.
+                 // add logic here.
                  return {
                     text: `You use ${item}. The effect will be added later.`,
-                    sender: "ai",
-                     timestamp: new Date(),
-                      type: "narrator"
-                  }
+                     sender: "ai",
+                    timestamp: new Date(),
+                     type: "narrator"
+                 }
             }
         }
 
-        if (!found) {
-            return {
-                text: `You don't have ${item}.`,
-                sender: "ai",
+       if (!found) {
+           return {
+               text: `You don't have ${item}.`,
+               sender: "ai",
                 timestamp: new Date(),
-                type: "narrator"
-            }
-        }
+               type: "narrator"
+           }
+       }
 
-    }
+   }
     const handleTalkCommand = async (input) => {
-        const target = input.substring(5).trim();
-        if (gameData.npcs[target] && gameData.npcs[target].location === location.name) {
-            const npc = gameData.npcs[target];
-             try {
-                const prompt =  `You are a fantasy dungeon master, experienced in running tabletop role-playing games.
+         const target = input.substring(5).trim();
+         if (gameData.npcs[target] && gameData.npcs[target].location === location.name) {
+             const npc = gameData.npcs[target];
+            try {
+               const prompt =  `You are a fantasy dungeon master, experienced in running tabletop role-playing games.
                 The player is in location ${location.name}.
-                The player wants to talk to ${npc.description} located in ${location.name}.
-                The npc should respond as the npc would in this setting. Avoid describing the character you are playing,
+                 The player wants to talk to ${npc.description} located in ${location.name}.
+               The npc should respond as the npc would in this setting. Avoid describing the character you are playing,
                 and use plain text without any asterisks or other markdown formatting. The npc's greeting is ${npc.greeting}. The player's input is: ${input} `;
-                 const result = await model.generateContent(prompt);
-                 const response = await result.response;
-                 let text = response.text();
-                 text = removeFormattingCharacters(text);
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                let text = response.text();
+                text = removeFormattingCharacters(text);
                  return { text: text, sender: "ai", timestamp: new Date(), type: "npc", npcName: target };
-             } catch (error) {
-                 console.error("Gemini API error:", error);
-                  return {
+            } catch (error) {
+               console.error("Gemini API error:", error);
+                 return {
                     text: "Sorry, I am having trouble with that right now.",
                     sender: "ai",
                     timestamp: new Date(),
-                 };
-             }
+                };
+           }
 
         } else {
              return {
-                text: `There is no one named ${target} to talk to here.`,
+               text: `There is no one named ${target} to talk to here.`,
                 sender: "ai",
                 timestamp: new Date(),
                 type: "narrator"
-            };
+           };
         }
     };
 
-    const handleStatsTouchStart = (e) => {
-      if (levelInfoRef.current && levelInfoRef.current.contains(e.target)) {
-        e.stopPropagation();
+   const handleStatsTouchStart = (e) => {
+       if (levelInfoRef.current && levelInfoRef.current.contains(e.target)) {
+           e.stopPropagation();
       }
     };
 
     return (
         <div className={`chat-level-container ${showStats ? "" : "full-screen-chat"}`}>
             <div className="chat-container">
-                <div className="chat-header">
+                 <div className="chat-header">
                     <h1>FABLE ENGINE v0.1a</h1>
                     {/* Show "Show Stats" button in chat-header on mobile when stats are hidden */}
                     {window.innerWidth <= 768 && !showStats && (
-                        <button
+                         <button
                             className="toggle-stats-button"
                             onClick={() => setShowStats(true)}
                         >
@@ -367,10 +441,10 @@ const ChatScreenWithLevel = ({ character }) => {
                         </button>
                     )}
                     {/* Hide the button in chat-header in desktop */}
-                    {window.innerWidth > 768 && (
-                        <button
+                   {window.innerWidth > 768 && (
+                       <button
                             className="toggle-stats-button"
-                            onClick={() => setShowStats((prev) => !prev)}
+                             onClick={() => setShowStats((prev) => !prev)}
                         >
                             {showStats ? "Hide Stats" : "Show Stats"}
                         </button>
@@ -382,16 +456,16 @@ const ChatScreenWithLevel = ({ character }) => {
                             {msg.sender === 'ai' && (
                                 <img src={defaultAIProfile} alt="AI Profile" className="profile-image" />
                             )}
-                            <div className={`message ${msg.sender} ${msg.type || ''}`}>
+                           <div className={`message ${msg.sender} ${msg.type || ''}`}>
                                 {msg.type === "npc" && <span className="npc-name">{msg.npcName}: </span>}
                                 <p>{msg.text}</p>
                                 <span className="timestamp">{msg.timestamp.toLocaleTimeString()}</span>
                             </div>
                         </div>
                     ))}
-                    {isTyping && (
+                     {isTyping && (
                         <div className="message-container ai">
-                            <img src={defaultAIProfile} alt="AI Profile" className="profile-image" />
+                           <img src={defaultAIProfile} alt="AI Profile" className="profile-image" />
                             <div className="message ai">
                                 <p>...</p>
                             </div>
@@ -401,52 +475,52 @@ const ChatScreenWithLevel = ({ character }) => {
                 <div className="chat-input">
                     <input
                         type="text"
-                        placeholder="Type your command..."
+                         placeholder="Type your command..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                         onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     />
                     <button onClick={sendMessage} disabled={isTyping}>
-                        {isTyping ? "Loading..." : "Send"}
+                         {isTyping ? "Loading..." : "Send"}
                     </button>
                 </div>
             </div>
             {showStats && (
                 <div className="level-info" ref={levelInfoRef} onTouchStart={handleStatsTouchStart}>
-                    <div className="level-info-header">
+                   <div className="level-info-header">
                         <h2>Level 1</h2>
                         {/* Show "Hide Stats" button in level-info header on mobile only if stats are shown */}
                         {window.innerWidth <= 768 && showStats && (
-                            <button
+                             <button
                                 className="toggle-stats-button"
-                                onClick={() => setShowStats(false)}
-                            >
+                               onClick={() => setShowStats(false)}
+                           >
                                 Hide Stats
                             </button>
                         )}
                     </div>
                     <div className="stat">
                         <label>Health</label>
-                        <div className="bar">
-                            <div className="fill health" style={{ width: "100%" }}></div>
+                         <div className="bar">
+                            <div className="fill health" style={{ width: `${playerHealth}%` }}></div>
                         </div>
                     </div>
-                    <div className="stat">
-                        <label>Mana</label>
-                        <div className="bar">
-                            <div className="fill mana" style={{ width: "100%" }}></div>
-                        </div>
+                     <div className="stat">
+                       <label>Mana</label>
+                         <div className="bar">
+                           <div className="fill mana" style={{ width: "100%" }}></div>
+                       </div>
                     </div>
                     <div className="stat">
-                        <label>Experience</label>
-                        <div className="bar">
-                            <div className="fill experience" style={{ width: "0%" }}></div>
+                         <label>Experience</label>
+                         <div className="bar">
+                           <div className="fill experience" style={{ width: "0%" }}></div>
                         </div>
                     </div>
 
                     {character?.profileImage && (
-                        <div className="character-profile-image">
-                            <img src={character.profileImage} alt="Player Profile" />
+                         <div className="character-profile-image">
+                           <img src={character.profileImage} alt="Player Profile" />
                         </div>
                     )}
 
@@ -454,7 +528,7 @@ const ChatScreenWithLevel = ({ character }) => {
                         <div className="character-stats">
                             <h3>Character Stats</h3>
                             {Object.entries(character.stats).map(([stat, value]) => (
-                                <div key={stat} className="stat-item">
+                                 <div key={stat} className="stat-item">
                                     <span>
                                         {stat}: {value}
                                     </span>
@@ -463,15 +537,15 @@ const ChatScreenWithLevel = ({ character }) => {
                         </div>
                     )}
                     <div className="map-container">
-                        <div className="map-header">
+                       <div className="map-header">
                             <button onClick={() => setShowMap(!showMap)} className="toggle-map-button">
-                                {showMap ? "Hide Map" : "Show Map"}
-                            </button>
+                                 {showMap ? "Hide Map" : "Show Map"}
+                           </button>
                         </div>
                         {showMap && (
-                            <div className="map-content">
+                           <div className="map-content">
                                 <img src="/images/map.jpg" alt="Game Map" className="game-map-image" />
-                            </div>
+                           </div>
                         )}
                     </div>
                     <div className="inventory-container">
@@ -479,9 +553,9 @@ const ChatScreenWithLevel = ({ character }) => {
                         <div className="inventory-slots">
                             {Object.entries(inventory).map(([slot, item]) => (
                                 <div key={slot} className="inventory-slot">
-                                    <span>{slot} : {item?.name || "Empty"}</span>
+                                     <span>{slot} : {item?.name || "Empty"}</span>
                                 </div>
-                            ))}
+                           ))}
                         </div>
                     </div>
                 </div>

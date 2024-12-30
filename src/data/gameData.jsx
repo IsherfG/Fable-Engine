@@ -26,7 +26,7 @@ const gameData = {
             },
             connections: ["Forest"],
             npcs: ["Old Man Hemlock", "Town Guard"],
-            enemies: [],
+             enemies: [],
         },
         Forest: {
             name: "Forest",
@@ -40,14 +40,14 @@ const gameData = {
                 },
             },
             connections: ["Oakhaven", "Dungeon"],
-            npcs: [],
-            enemies: ["goblin"],
+             npcs: [],
+            enemies: [],
         },
         Dungeon: {
             name: "Dungeon",
-            description: "A dark and mysterious underground complex",
+             description: "A dark and mysterious underground complex",
             sublocations: {
-                "Dungeon Entrance": {
+                 "Dungeon Entrance": {
                     description: "The entrance to the dungeon."
                 },
                 "Corridor": {
@@ -55,33 +55,39 @@ const gameData = {
                 },
             },
             connections: ["Forest"],
-            npcs: [],
-            enemies: ["skeleton"],
+             npcs: [],
+            enemies: ["goblin"], // Dungeon has goblins
         },
     },
     npcs: {
         "Old Man Hemlock": {
             description: "An old man with a kind face, sells items.",
-            location: "Oakhaven",
+             location: "Oakhaven",
             greeting: "Well hello there, adventurer, what brings you to our town?",
         },
         "Town Guard": {
             description: "A stern and watchful town guard",
-            location: "Oakhaven",
-            greeting: "Halt! State your purpose in our town!",
+             location: "Oakhaven",
+             greeting: "Halt! State your purpose in our town!",
         },
     },
     enemies: {
         goblin: {
             name: "Goblin",
             description: "A small green creature that uses dirty fighting tactics.",
+           health: 10,
+            damage: 1,
+            isAlive: true
         },
-        skeleton: {
+         skeleton: {
             name: "Skeleton",
             description: "A risen warrior from a bygone era, now serving as an undead minion.",
+            health: 8,
+            damage: 2,
+            isAlive: true
         },
     },
-    bosses: {
+   bosses: {
         malkor: {
             name: "Malkor",
             description: "The embodiment of chaos and evil, seeking to control the world",
@@ -96,14 +102,14 @@ const gameData = {
             name: "Rusty Sword",
             description: "A weathered blade that is reliable but not powerful",
         },
-        smallHealthPotion: {
+         smallHealthPotion: {
             name: "Small Health Potion",
             description: "A small vial containing healing liquid",
         },
         oldBook: {
             name: "Old Book",
             description: "A dusty old book with ancient text."
-        }
+         }
     },
 };
 
