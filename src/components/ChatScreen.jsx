@@ -1,8 +1,10 @@
-// ChatScreenWithLevel.js
+// src/components/ChatScreenWithLevel.js
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatScreen.css";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import defaultAIProfile from '../assets/defaultAIProfile.png';
+import gameData from '../data/gameData'; // Import game data
+import gameInstructions from '../data/gameInstructions'; // Import instructions
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -15,11 +17,13 @@ const ChatScreenWithLevel = ({ character }) => {
     const [gameStarted, setGameStarted] = useState(false);
     const [location, setLocation] = useState({
         name: "Oakhaven",
+        sublocation: "Town Gate",
         description: "a small town known for its old ruins",
     });
     const [showStats, setShowStats] = useState(true);
     const [showMap, setShowMap] = useState(false);
-      const levelInfoRef = useRef(null);
+    const levelInfoRef = useRef(null);
+    const speechRef = useRef(null);
 
     // Inventory state, using an object to store both slots and items
     const [inventory, setInventory] = useState({
@@ -47,126 +51,17 @@ const ChatScreenWithLevel = ({ character }) => {
         item4: null,
     });
 
+    const initialSystemInstructions = gameInstructions.initialSystemInstructions
+        .replace('GAME_STORY', gameData.story)
+        .replace('GAME_LORE', gameData.lore)
+        .replace('GAME_GOAL', gameData.goal);
 
-
-    // Game Data (Hardcoded for Now)
-    const gameData = {
-        story: `The ancient evil of Malkor has awakened, spreading corruption across the land. The people of Oakhaven and beyond are in peril. The player characters are tasked with gathering allies, uncovering ancient artifacts, and ultimately confronting Malkor to restore balance to the world.`,
-        lore: `Long ago, the world was protected by the 'Crystal of Harmony'. This crystal was shattered, its fragments scattered throughout the land. Malkor, the embodiment of chaos, seeks to gather these fragments to fuel his dark power.`,
-        goal: `Collect the fragments of the Crystal of Harmony and defeat Malkor to save the land.`,
-        playerCharacters: [
-            {
-                name: "Adventurer",
-                description: "A novice adventurer seeking a new life in Oakhaven.",
-            },
-        ],
-        locations: {
-            Oakhaven: {
-                name: "Oakhaven",
-                description: "a small town known for its old ruins",
-                connections: ["Dungeon", "ForestPath"],
-                npcs: ["Old Man Hemlock", "Town Guard"],
-                enemies: [],
-            },
-            Dungeon: {
-                name: "Dungeon",
-                description: "a dark and mysterious underground complex",
-                connections: ["Oakhaven", "Catacombs"],
-                npcs: [],
-                enemies: ["skeleton"],
-            },
-            ForestPath: {
-                name: "ForestPath",
-                description: "a winding trail through the forest",
-                connections: ["Oakhaven", "Ruins"],
-                npcs: [],
-                enemies: ["goblin"],
-            },
-            Catacombs: {
-                name: "Catacombs",
-                description: "a hidden set of underground tunnels",
-                connections: ["Dungeon"],
-                npcs: [],
-                enemies: [],
-            },
-            Ruins: {
-                name: "Ruins",
-                description: "An ancient area with broken walls and artifacts",
-                connections: ["ForestPath"],
-                npcs: [],
-                enemies: [],
-            },
-        },
-        npcs: {
-            "Old Man Hemlock": {
-                description: "An old man with a kind face, sells items.",
-                location: "Oakhaven",
-                greeting: "Well hello there, adventurer, what brings you to our town?",
-            },
-            "Town Guard": {
-                description: "A stern and watchful town guard",
-                location: "Oakhaven",
-                greeting: "Halt! State your purpose in our town!",
-            },
-        },
-        enemies: {
-            goblin: {
-                name: "Goblin",
-                description: "A small green creature that uses dirty fighting tactics.",
-            },
-            skeleton: {
-                name: "Skeleton",
-                description: "A risen warrior from a bygone era, now serving as an undead minion.",
-            },
-        },
-        bosses: {
-            malkor: {
-                name: "Malkor",
-                description: "The embodiment of chaos and evil, seeking to control the world",
-            },
-        },
-        items: {
-            "Basic Armor": {
-                name: "Basic Armor",
-                description: "A simple set of leather armor"
-            },
-            rustySword: {
-                name: "Rusty Sword",
-                description: "A weathered blade that is reliable but not powerful",
-            },
-            smallHealthPotion: {
-                name: "Small Health Potion",
-                description: "A small vial containing healing liquid",
-            },
-            oldBook: {
-                name: "Old Book",
-                description: "A dusty old book with ancient text."
-            }
-        },
-    };
-
-    const initialSystemInstructions = `You are a fantasy dungeon master, experienced in running tabletop role-playing games.
-    Your role is to first set the stage for the player, then guide the player through an adventure.
-    Be creative and descriptive. Be whimsical, but also consistent with the game's established lore.
-    Keep the game moving and challenging, while also being fair. Focus on narrative, character development, and player interaction.
-    Avoid describing yourself or your role in the game, and speak as if you are the game itself.
-    Avoid describing what the player "can" do, instead encourage their imagination.
-    Do not use any markdown or any other formatting characters such as ** or *. Use plain text in your responses.
-
-   The game's story is: ${gameData.story}
-   The lore is: ${gameData.lore}
-   The game's goal is: ${gameData.goal}
-    `;
-
-    const gameStartInstructions = `
-    You begin by setting the scene and introducing the player to their character.
-    Do not begin until the player has introduced their character.
-    Then, introduce the game's overarching story or objective. This should be the main focus for the game's start.
-    The player starts in ${location.name}, ${location.description}.
-    The player's character is ${gameData.playerCharacters[0].name}, ${gameData.playerCharacters[0].description}
-     Do not use any markdown or any other formatting characters such as ** or *. Use plain text in your responses.
-    Do not start the game until the player introduces themself.
-    `;
+    const gameStartInstructions = gameInstructions.gameStartInstructions
+        .replace('START_LOCATION_NAME', location.name)
+        .replace('START_LOCATION_SUBLOCATION', location.sublocation)
+        .replace('START_LOCATION_DESCRIPTION', location.description)
+        .replace('PLAYER_CHARACTER_NAME', gameData.playerCharacters[0].name)
+        .replace('PLAYER_CHARACTER_DESCRIPTION', gameData.playerCharacters[0].description);
 
     const systemInstructions = `
     You are a fantasy dungeon master, experienced in running tabletop role-playing games.
@@ -177,10 +72,11 @@ const ChatScreenWithLevel = ({ character }) => {
     The game's story is: ${gameData.story}
     The lore is: ${gameData.lore}
     The game's goal is: ${gameData.goal}
-    The player is currently in ${location.name}, ${location.description}. Available locations are: ${Object.keys(
+    The player is currently in ${location.name}, ${location.sublocation}, ${location.description}. Available locations are: ${Object.keys(
         gameData.locations
     ).join(", ")}
-    Available npcs: ${gameData.locations[location.name]?.npcs?.join(", ") || "none"}. Available items: ${Object.keys(gameData.items).join(", ")}
+     Available sublocations for the current area are: ${Object.keys(gameData.locations[location.name].sublocations).join(", ")}
+     Available npcs: ${gameData.locations[location.name]?.npcs?.join(", ") || "none"}. Available items: ${Object.keys(gameData.items).join(", ")}
     `;
 
     useEffect(() => {
@@ -201,10 +97,33 @@ const ChatScreenWithLevel = ({ character }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-
     const removeFormattingCharacters = (text) => {
         return text.replace(/\*\*|\*/g, '');
     }
+
+    const initializeSpeech = () => {
+      if ('speechSynthesis' in window) {
+       return window.speechSynthesis
+     } else {
+        console.error("Text-to-speech is not supported in this browser.");
+       return null;
+      }
+    };
+
+  const speak = (text) => {
+         const synth = initializeSpeech();
+         if (!synth) return;
+
+           if (speechRef.current && synth.speaking) {
+                 synth.cancel();
+             }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+             speechRef.current = utterance;
+           synth.speak(utterance);
+     }
 
     const sendMessage = async () => {
         if (!input.trim()) return;
@@ -233,6 +152,7 @@ const ChatScreenWithLevel = ({ character }) => {
                 text = removeFormattingCharacters(text);
                 const aiResponse = { text: text, sender: "ai", timestamp: new Date() };
                 setMessages((prev) => [...prev, aiResponse]);
+                   speak(text);
             } catch (error) {
                 console.error("Gemini API error:", error);
                 const errorMessage = {
@@ -250,10 +170,11 @@ const ChatScreenWithLevel = ({ character }) => {
         let processedResponse = null;
 
         // Check for commands
-        if (input.toLowerCase().startsWith("go ")) {
-            processedResponse = handleGoCommand(input);
-
-        } else if (input.toLowerCase().startsWith("talk ")) {
+         if (input.toLowerCase().startsWith("go to ")) {
+           processedResponse = handleGoCommand(input);
+         } else if (input.toLowerCase().startsWith("where am i")) {
+            processedResponse = handleWhereAmICommand();
+        }  else if (input.toLowerCase().startsWith("talk ")) {
             processedResponse = await handleTalkCommand(input);
         }
         else if (input.toLowerCase().startsWith("attack ")) {
@@ -269,6 +190,7 @@ const ChatScreenWithLevel = ({ character }) => {
                 let text = response.text();
                 text = removeFormattingCharacters(text);
                 processedResponse = { text: text, sender: "ai", timestamp: new Date(), type: "narrator" };
+                   speak(text);
             } catch (error) {
                 console.error("Gemini API error:", error);
                 processedResponse = {
@@ -281,31 +203,61 @@ const ChatScreenWithLevel = ({ character }) => {
 
         if (processedResponse) {
             setMessages((prev) => [...prev, processedResponse]);
+             if (processedResponse.type !== "user") {
+                speak(processedResponse.text);
+            }
         }
         setIsTyping(false);
     };
 
+  const handleGoCommand = (input) => {
+        const destination = input.substring(6).trim().toLowerCase();
+        let newLocation = null;
 
-    const handleGoCommand = (input) => {
-        const destination = input.substring(3).trim();
-        const currentLocation = gameData.locations[location.name]
-           if (currentLocation && currentLocation.connections.includes(destination)) {
-             const newLocation = gameData.locations[destination];
-               setLocation(newLocation);
+        if (gameData.locations[location.name].sublocations) {
+            const sublocationKeys = Object.keys(gameData.locations[location.name].sublocations).map(key => key.toLowerCase());
+            if (sublocationKeys.includes(destination)) {
+                const sublocationName = Object.keys(gameData.locations[location.name].sublocations)[sublocationKeys.indexOf(destination)];
+               newLocation = { ...location, sublocation: sublocationName, description: gameData.locations[location.name].sublocations[sublocationName].description };
+          }
+        }
+
+        if (!newLocation) {
+           const locationKeys = Object.keys(gameData.locations).map(key => key.toLowerCase());
+            if (locationKeys.includes(destination)) {
+                 if (gameData.locations[location.name].connections.includes(Object.keys(gameData.locations)[locationKeys.indexOf(destination)]))
+                   {
+                     const locationName = Object.keys(gameData.locations)[locationKeys.indexOf(destination)]
+                     newLocation = {name: locationName, sublocation: Object.keys(gameData.locations[locationName].sublocations)[0], description: gameData.locations[locationName].sublocations[Object.keys(gameData.locations[locationName].sublocations)[0]].description};
+                }
+            }
+        }
+
+        if(newLocation){
+            setLocation(newLocation);
               return  {
-                 text: `As you travel to ${newLocation.name}, you find yourself in ${newLocation.description}.`,
+                 text: `As you travel to ${newLocation.sublocation}, you find yourself in ${newLocation.description}.`,
                  sender: "ai",
                 timestamp: new Date(),
                 type: "narrator"
             };
-          } else {
+        } else {
             return {
-               text: `You cannot go to ${destination} from your current location.`,
+                text: `You cannot go to ${destination} from your current location.`,
                 sender: "ai",
                 timestamp: new Date(),
-                 type: "narrator"
+                type: "narrator"
             };
-          }
+        }
+    };
+
+     const handleWhereAmICommand = () => {
+        return {
+            text: `You are currently in ${location.name}, ${location.sublocation}, ${location.description}.`,
+            sender: "ai",
+            timestamp: new Date(),
+            type: "narrator"
+        };
     };
 
     const handleAttackCommand = (input) => {
