@@ -1,0 +1,94 @@
+{
+  "_note": "Quest state is runtime data. 'offered' means the party has heard of it, 'active' means they have taken it up, 'complete'/'failed' are terminal.",
+  "version": 1,
+  "quests": [
+    {
+      "id": "reach-the-keep",
+      "title": "Reach the Keep",
+      "giver": "none",
+      "status": "active",
+      "steps": [
+        "Survive the trail",
+        "Meet Haldryck",
+        "Pass the gatehouse"
+      ],
+      "reward": "Safety, beds, long rests",
+      "notes": "Opening arc. The Keep is the only place a long rest works. | The party reached the outer gatehouse alive."
+    },
+    {
+      "id": "report-to-winvarle",
+      "title": "Report to the Castellan",
+      "giver": "Bartho and Gala",
+      "status": "offered",
+      "steps": [
+        "Enter the fortress",
+        "Speak with Winvarle"
+      ],
+      "reward": "The Caves of Chaos quest, and pay",
+      "notes": "Winvarle briefs the party on the Caves. This is what opens the sandbox."
+    },
+    {
+      "id": "bandits-on-the-trail",
+      "title": "Bandits on the Trail",
+      "giver": "Looted Wagon",
+      "status": "offered",
+      "steps": [
+        "Find the looted wagon",
+        "Deal with Pral and his band"
+      ],
+      "reward": "Recovered cargo, coin",
+      "notes": "Pral can survive and become a recurring antagonist. Do not force a kill."
+    },
+    {
+      "id": "clear-the-caves",
+      "title": "The Caves of Chaos",
+      "giver": "Winvarle",
+      "status": "offered",
+      "steps": [
+        "Scout the canyon",
+        "Deal with each cave (A-K)",
+        "Learn what is organising the tribes"
+      ],
+      "reward": "Levels (one per cave cleared), treasure, the Keep's gratitude",
+      "notes": "The main track. Clearing caves is the level-up mechanism. Factions can be allied instead of killed."
+    },
+    {
+      "id": "discover-the-cult",
+      "title": "Something Is Organising Them",
+      "giver": "clues",
+      "status": "hidden",
+      "steps": [
+        "Find the iron tome in C3 Library",
+        "Or talk to Oggdug about his off-limits caves",
+        "Or meet cultists in G6 Cult Barrack"
+      ],
+      "reward": "Knowledge of the Chaos Bell",
+      "notes": "Three independent routes to this reveal. Any one is enough."
+    },
+    {
+      "id": "the-chaos-bell",
+      "title": "The Chaos Bell",
+      "giver": "the iron tome",
+      "status": "hidden",
+      "steps": [
+        "Learn how the Bell can be destroyed",
+        "Reach Cave K",
+        "Destroy it"
+      ],
+      "reward": "The campaign's resolution",
+      "notes": "Endgame. Require the tome (or equivalent knowledge) before letting them attempt it."
+    },
+    {
+      "id": "the-empty-temple",
+      "title": "The Empty Temple",
+      "giver": "keep rumours",
+      "status": "hidden",
+      "steps": [
+        "Hear that the temple's priest left",
+        "Learn where Ivlis went"
+      ],
+      "reward": "Early foreshadowing of the antagonist",
+      "notes": "Plant in the Keep, pay off in Cave K. Best delivered by a Keep NPC rumour."
+    }
+  ]
+}

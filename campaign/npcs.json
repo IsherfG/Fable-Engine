@@ -1,0 +1,147 @@
+{
+  "_note": "Verified NPC names and roles only. Add anyone you meet in your booklets/cards. 'voice' null means the app assigns a stable voice by name.",
+  "version": 1,
+  "npcs": [
+    {
+      "id": "winvarle",
+      "name": "Winvarle",
+      "role": "Castellan of the Keep",
+      "location": "keep-fortress",
+      "disposition": "friendly",
+      "voice": null,
+      "wants": "The Keep to survive. Wants the Caves of Chaos dealt with.",
+      "knows": [
+        "There are caves a few miles out, and the things in them are organised",
+        "The Caves threaten the Keep"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "Quest-giver. Briefs the party on the Caves."
+    },
+    {
+      "id": "bartho",
+      "name": "Bartho",
+      "role": "Gate guard",
+      "location": "keep-gatehouse",
+      "disposition": "neutral",
+      "voice": null,
+      "wants": "An uneventful shift.",
+      "knows": [
+        "Who comes and goes",
+        "The castellan is looking for capable people"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "One of the pair who intercept arrivals."
+    },
+    {
+      "id": "gala",
+      "name": "Gala",
+      "role": "Gate guard",
+      "location": "keep-gatehouse",
+      "disposition": "neutral",
+      "voice": null,
+      "wants": "To be taken seriously.",
+      "knows": [
+        "Who comes and goes",
+        "Rumours from travellers"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "The sharper of the two guards. Good first social encounter."
+    },
+    {
+      "id": "haldryck",
+      "name": "Haldryck",
+      "role": "Traveller and guide",
+      "location": "keep-inn",
+      "disposition": "friendly",
+      "voice": null,
+      "wants": "Company and a safe road.",
+      "knows": [
+        "How the Keep works and who to talk to",
+        "The road between the Keep and the caves"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "Met on the Game Trail, then found at the traveller's inn (area 8). Natural ally / hireling for a two-PC table."
+    },
+    {
+      "id": "mallyn",
+      "name": "Mallyn",
+      "role": "Traveller with tales",
+      "location": "wild-trail",
+      "disposition": "friendly",
+      "voice": null,
+      "wants": "An audience.",
+      "knows": [
+        "Stories of the Borderlands",
+        "Local dangers"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "Appears on later trips along the trail. Useful rumour dispenser."
+    },
+    {
+      "id": "pral",
+      "name": "Pral",
+      "role": "Bandit leader",
+      "location": "wild-trail",
+      "disposition": "hostile",
+      "voice": null,
+      "wants": "Cargo, coin, and to be feared.",
+      "knows": [
+        "Where the bandits lair",
+        "Which roads are watched"
+      ],
+      "secret": null,
+      "met": false,
+      "notes": "Bandit Ambush on the trail. If he survives and wins, make him a recurring antagonist \u2014 excellent thread for a small party."
+    },
+    {
+      "id": "ivlis",
+      "name": "Ivlis",
+      "role": "Leader of the Cult of Chaos",
+      "location": "cave-k",
+      "disposition": "hostile",
+      "voice": null,
+      "wants": "The Chaos Bell's power, and the Keep broken.",
+      "knows": [
+        "The Chaos Bell's nature",
+        "The cult network in the caves"
+      ],
+      "secret": "Was the previous priest of the Keep's temple (area 11) before leaving under mysterious circumstances.",
+      "met": false,
+      "notes": "The campaign's antagonist. Seed her early via the temple and cult encounters."
+    },
+    {
+      "id": "oggdug",
+      "name": "Oggdug",
+      "role": "Ogre mercenary",
+      "location": "cave-e",
+      "disposition": "wary",
+      "voice": null,
+      "wants": "Payment, and revenge for his brother.",
+      "knows": [
+        "The Cult of Chaos exists",
+        "Which caves are off-limits and why"
+      ],
+      "secret": "His brother Zurf was killed by the owlbear in Cave G and then reanimated by cultists to guard Cave K.",
+      "met": false,
+      "notes": "Recruitable. Ask about the off-limits caves and he talks about the cult. Huge asset for two players."
+    },
+    {
+      "id": "zurf",
+      "name": "Zurf",
+      "role": "Oggdug's reanimated brother",
+      "location": "cave-k",
+      "disposition": "hostile",
+      "voice": null,
+      "wants": "Nothing. He is not in control.",
+      "knows": [],
+      "secret": "Killed by the owlbear in Cave G, reanimated by cultists, now a bodyguard in Cave K.",
+      "met": false,
+      "notes": "Emotional payoff for Oggdug's thread. Play the recognition, not just the statblock."
+    }
+  ]
+}

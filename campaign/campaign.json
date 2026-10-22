@@ -1,0 +1,54 @@
+{
+  "_note": "Runtime campaign state written by the app. Safe to edit by hand between sessions.",
+  "version": 1,
+  "module": "Heroes of the Borderlands",
+  "system": "D&D 2024",
+  "levelRange": [
+    1,
+    3
+  ],
+  "bookletOrder": [
+    "wilderness",
+    "keep",
+    "caves"
+  ],
+  "act": "wilderness",
+  "day": 1,
+  "timeOfDay": "morning",
+  "partyLocation": "wild-trail",
+  "weather": "overcast, rain threatening",
+  "partySize": 2,
+  "rules": {
+    "longRestOnlyInKeep": true,
+    "levelUpByClearingCaves": true,
+    "encountersWrittenFor": 4
+  },
+  "factions": {
+    "keep": 0,
+    "cult-of-chaos": -10,
+    "kobolds": 0,
+    "goblins": 0,
+    "hobgoblins": 0,
+    "bugbears": 0,
+    "gnolls": 0,
+    "ogre": 0,
+    "mephits": 0,
+    "nothic": 0,
+    "minotaur": 0
+  },
+  "flags": {
+    "metHaldryck": false,
+    "metBarthoOrGala": false,
+    "metWinvarle": false,
+    "pralDefeated": false,
+    "ironTomeFound": false,
+    "cultRevealed": false,
+    "chaosBellDestroyed": false
+  },
+  "scene": "The party is on the trail south of the Keep, in the rain. A looted wagon lies ahead.",
+  "discoveries": [],
+  "sessionLog": [],
+  "started": false,
+  "adventure": null,
+  "bond": null
+}

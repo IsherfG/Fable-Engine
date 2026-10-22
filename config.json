@@ -1,0 +1,67 @@
+{
+  "port": 8787,
+  "llm": {
+    "baseUrl": "https://api.commandcode.ai/provider/v1",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "maxTokens": 1200,
+    "temperature": 0.9,
+    "reasoningEffort": "low",
+    "timeoutMs": 60000,
+    "maxToolRounds": 6
+  },
+  "stt": {
+    "bin": "~/.local/src/whisper.cpp/build/bin/whisper-cli",
+    "model": "~/.cache/whisper-cpp/ggml-small.en.bin",
+    "threads": 8,
+    "bias": "Dungeons and Dragons tabletop session. Terms: d20, d6, ability check, saving throw, initiative, perception, insight, stealth, advantage, disadvantage, opportunity attack, hit points, armor class, spell slot, cantrip, Eldritch Blast, Magic Missile, Fireball, Beholder, mimic, goblin, owlbear, tavern, dungeon."
+  },
+  "tts": {
+    "enabled": true,
+    "provider": "kokoro",
+    "rate": 180,
+    "kokoro": {
+      "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+      "dtype": "q8",
+      "device": "cpu",
+      "speed": 0.95,
+      "defaultVoice": "bf_isabella",
+      "voicePool": [
+        "bf_emma",
+        "bf_alice",
+        "bf_isabella",
+        "bf_lily",
+        "af_heart",
+        "af_nicole",
+        "af_sarah",
+        "af_jessica",
+        "af_kore",
+        "af_bella",
+        "af_nova",
+        "am_michael",
+        "am_adam",
+        "am_fenrir",
+        "bm_george",
+        "bm_daniel",
+        "bm_lewis",
+        "bm_fable"
+      ]
+    },
+    "say": {
+      "defaultVoice": "Daniel",
+      "voicePool": [
+        "Daniel",
+        "Samantha",
+        "Karen",
+        "Moira",
+        "Tessa",
+        "Rishi",
+        "Oliver",
+        "Fiona",
+        "Fred",
+        "Flo (English (US))",
+        "Eddy (English (US))"
+      ]
+    }
+  },
+  "voices": {}
+}

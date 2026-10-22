@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Generated audio cache (TTS mp3s, temp wavs)
+.cache/
+
+# Local TLS material — contains a PRIVATE KEY, never commit
+certs/
+
+# Downloaded models (whisper ggml, ONNX)
+*.ggml
+*.bin
+*.onnx
+models/
+
+# Session transcripts are personal play data
+campaign/sessions/
+
+# OS noise
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Logs and scratch
+*.log
+npm-debug.log*
+.npm/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Local overrides: put machine-specific settings here
+config.local.json

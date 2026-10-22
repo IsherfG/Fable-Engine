@@ -1,0 +1,299 @@
+{
+  "_note": "Structured location data for Heroes of the Borderlands. Only publicly verified areas are listed; fill the rest from your booklets. 'status' is runtime state written by the app; the other fields are reference.",
+  "version": 1,
+  "pending": {
+    "keep": [
+      "areas 1-7",
+      "area 10"
+    ],
+    "wilderness": [
+      "region 3",
+      "region 4"
+    ],
+    "caves": [
+      "every room number and name inside A-K except C3 and G6"
+    ]
+  },
+  "locations": [
+    {
+      "id": "wild-trail",
+      "name": "Region 1 \u2014 The Trail",
+      "booklet": "wilderness",
+      "kind": "wilderness",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "keep-gatehouse",
+        "caves-valley",
+        "wild-woods"
+      ],
+      "summary": "The road between the Keep and the Caves. Works approached from the south.",
+      "encounters": [
+        "Looted Wagon",
+        "Game Trail",
+        "Bandit Ambush"
+      ],
+      "dm": "Best opening scene. Run Looted Wagon \u2192 Game Trail \u2192 Bandit Ambush in that order to teach combat, exploration and social in one session."
+    },
+    {
+      "id": "wild-woods",
+      "name": "Region 2 \u2014 The Woods",
+      "booklet": "wilderness",
+      "kind": "wilderness",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "wild-trail",
+        "caves-valley",
+        "keep-gatehouse"
+      ],
+      "summary": "The shorter, more dangerous route between the Keep and the Caves.",
+      "encounters": [
+        "Woods Encounters table"
+      ],
+      "dm": "Use for cult foreshadowing: cultists performing an occult ritual."
+    },
+    {
+      "id": "keep-gatehouse",
+      "name": "The Keep \u2014 Outer Gatehouse",
+      "booklet": "keep",
+      "kind": "settlement",
+      "safe": true,
+      "status": "unvisited",
+      "connections": [
+        "wild-trail",
+        "keep-fortress",
+        "keep-inn",
+        "keep-tavern"
+      ],
+      "summary": "The only way in. Bartho and Gala challenge everyone who arrives.",
+      "dm": "First impression of the Keep. They steer the party to the castellan. Long rests are possible anywhere inside the Keep."
+    },
+    {
+      "id": "keep-fortress",
+      "name": "The Keep \u2014 Fortress",
+      "booklet": "keep",
+      "kind": "settlement",
+      "safe": true,
+      "status": "unvisited",
+      "connections": [
+        "keep-gatehouse"
+      ],
+      "summary": "Castellan Winvarle and his advisers. The party is briefed here on the Caves of Chaos.",
+      "dm": "Winvarle is the quest-giver. This is where the sandbox opens up."
+    },
+    {
+      "id": "keep-inn",
+      "name": "The Keep \u2014 Area 8, Traveller's Inn",
+      "booklet": "keep",
+      "kind": "settlement",
+      "safe": true,
+      "status": "unvisited",
+      "connections": [
+        "keep-gatehouse",
+        "keep-tavern"
+      ],
+      "summary": "Beds and rest. Haldryck can be found here.",
+      "dm": "Haldryck is the party's first friendly contact and a natural ally for a two-player table."
+    },
+    {
+      "id": "keep-tavern",
+      "name": "The Keep \u2014 Area 9, Tavern",
+      "booklet": "keep",
+      "kind": "settlement",
+      "safe": true,
+      "status": "unvisited",
+      "connections": [
+        "keep-gatehouse",
+        "keep-inn"
+      ],
+      "summary": "Hot food and rumours. The natural place to dangle quest hooks.",
+      "dm": "Use NPC card rumours here to point at the Caves, the temple, and the bandits."
+    },
+    {
+      "id": "keep-temple",
+      "name": "The Keep \u2014 Area 11, Temple",
+      "booklet": "keep",
+      "kind": "settlement",
+      "safe": true,
+      "status": "unvisited",
+      "connections": [
+        "keep-gatehouse"
+      ],
+      "summary": "The Keep's temple. Its previous priest, Ivlis, left under mysterious circumstances.",
+      "dm": "The long fuse on the Ivlis reveal. Plant it early, pay it off in the Caves."
+    },
+    {
+      "id": "caves-valley",
+      "name": "The Caves of Chaos \u2014 Canyon",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "wild-trail",
+        "wild-woods",
+        "cave-a",
+        "cave-b",
+        "cave-c",
+        "cave-d",
+        "cave-e",
+        "cave-f",
+        "cave-g",
+        "cave-h",
+        "cave-i",
+        "cave-j",
+        "cave-k"
+      ],
+      "summary": "A honeycomb of caves cut into a canyon a few miles from the Keep. Factions hold each mouth.",
+      "dm": "No long rests here. Each cleared cave is the level track. Factions can be played against each other."
+    },
+    {
+      "id": "cave-a",
+      "name": "Cave A \u2014 Kobold Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "kobolds",
+      "dm": ""
+    },
+    {
+      "id": "cave-b",
+      "name": "Cave B \u2014 Mephit Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "mephits",
+      "dm": ""
+    },
+    {
+      "id": "cave-c",
+      "name": "Cave C \u2014 Nothic Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "nothic",
+      "summary": "Contains C3 Library, and an iron tome describing the Chaos Bell and how to destroy it.",
+      "dm": "Key lore cave. Delivering the iron tome here is the campaign's main turn."
+    },
+    {
+      "id": "cave-d",
+      "name": "Cave D \u2014 Goblin Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "goblins",
+      "dm": ""
+    },
+    {
+      "id": "cave-e",
+      "name": "Cave E \u2014 Ogre Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "ogre",
+      "summary": "Oggdug, an ogre mercenary, lairs here.",
+      "dm": "Oggdug will talk about the Cult if asked about his off-limits caves. He is recruitable \u2014 very valuable to a two-PC party."
+    },
+    {
+      "id": "cave-f",
+      "name": "Cave F \u2014 Hobgoblin Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "hobgoblins",
+      "dm": ""
+    },
+    {
+      "id": "cave-g",
+      "name": "Cave G \u2014 Shunned Caves",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "cult-of-chaos",
+      "summary": "An owlbear killed Zurf here. Contains G6 Cult Barrack.",
+      "dm": "Cultists can be met in G6 \u2014 the most direct way to reveal the cult."
+    },
+    {
+      "id": "cave-h",
+      "name": "Cave H \u2014 Bugbear Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "bugbears",
+      "dm": ""
+    },
+    {
+      "id": "cave-i",
+      "name": "Cave I \u2014 Minotaur Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "minotaur",
+      "dm": ""
+    },
+    {
+      "id": "cave-j",
+      "name": "Cave J \u2014 Gnoll Lair",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "gnolls",
+      "dm": ""
+    },
+    {
+      "id": "cave-k",
+      "name": "Cave K \u2014 Shrine of Evil Chaos",
+      "booklet": "caves",
+      "kind": "dungeon",
+      "safe": false,
+      "status": "unvisited",
+      "connections": [
+        "caves-valley"
+      ],
+      "faction": "cult-of-chaos",
+      "summary": "The cult's shrine. Reanimated Zurf serves as bodyguard here.",
+      "dm": "Endgame location. The Chaos Bell is the payoff."
+    }
+  ]
+}

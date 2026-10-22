@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <title>Fable Engine — AI Dungeon Master</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🎲</text></svg>" />
+  </head>
+  <body>
+    <div id="setup" class="setup hidden"></div>
+    <header class="bar">
+      <div class="brand">
+        <span class="mark">◆</span>
+        <h1>Fable Engine</h1>
+        <span class="sub">AI Dungeon Master</span>
+      </div>
+      <div class="bar-right">
+        <span id="model" class="chip">—</span>
+        <button id="mute" class="chip-btn" type="button" aria-pressed="false">🔊 voice on</button>
+        <button id="test" class="chip-btn" type="button" title="Play a test phrase">🔉 test</button>
+        <button id="history" class="chip-btn" type="button">☰ sessions</button>
+        <button id="reset" class="chip-btn" type="button">↺ new campaign</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="stage">
+        <div id="transcript" class="transcript" aria-live="polite"></div>
+
+        <div id="welcome" class="welcome">
+          <p class="welcome-lead">Your table is set.</p>
+          <p>
+            Hold the button below, or hold <kbd>space</kbd>, and speak as your character. Release to send.
+          </p>
+          <button id="begin" class="begin" type="button">Open the scene</button>
+        </div>
+
+        <div class="controls">
+          <button id="talk" class="talk" type="button" disabled>
+            <span class="talk-dot"></span>
+            <span id="talk-label">Hold to talk</span>
+          </button>
+          <form id="type-form" class="type-form">
+            <input
+              id="type-input"
+              type="text"
+              placeholder="…or type your action and press Enter"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </form>
+        </div>
+        <div id="status" class="status" role="status"></div>
+      </section>
+
+      <aside class="side">
+        <div class="panel">
+          <h2>Party</h2>
+          <div id="party" class="party"></div>
+          <button id="edit-party" class="chip-btn wide" type="button">Edit characters</button>
+        </div>
+        <div class="panel">
+          <h2>Dice log</h2>
+          <div id="dice" class="dice"></div>
+        </div>
+        <div class="panel">
+          <h2>Scene</h2>
+          <div id="scene" class="scene"></div>
+          <button id="edit-scene" class="chip-btn wide" type="button">Edit scene</button>
+        </div>
+      </aside>
+    </main>
+
+    <div id="party-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="party-modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h2 id="party-modal-title">Characters</h2>
+          <button id="party-cancel" class="chip-btn" type="button">Close</button>
+        </div>
+        <p class="modal-hint">
+          These sheets are what the Dungeon Master sees every turn. Edit freely between sessions.
+        </p>
+        <div id="party-form" class="party-form"></div>
+        <div class="modal-actions">
+          <button id="party-save" class="begin" type="button">Save characters</button>
+          <span id="party-status" class="modal-status"></span>
+        </div>
+      </div>
+    </div>
+
+    <aside id="history-drawer" class="drawer hidden" aria-label="Session history">
+      <div class="drawer-head">
+        <h2>Sessions</h2>
+        <button id="history-close" class="chip-btn" type="button">Close</button>
+      </div>
+      <div id="history-current" class="drawer-current"></div>
+      <button id="end-session" class="chip-btn wide" type="button">End this session</button>
+      <h3 class="drawer-h3">Past sessions</h3>
+      <div id="history-list" class="history-list"></div>
+      <div id="history-detail" class="history-detail hidden"></div>
+    </aside>
+
+
+    <audio id="player" hidden playsinline preload="auto"></audio>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

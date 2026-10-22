@@ -1,0 +1,172 @@
+{
+  "_note": "Your two characters. These are sensible level-1 defaults for a duo (fighter + cleric is the sturdiest pairing). If you use the starter set's pregen boards, overwrite these numbers with the ones printed on the board - the boards are authoritative.",
+  "version": 2,
+  "scene": "Rain on the trail south of the Keep. A looted wagon sits ahead where the road bends, one wheel still turning in the wind. The Keep is a grey shape on the hill beyond.",
+  "party": [
+    {
+      "name": "Kael",
+      "player": "Nyi",
+      "class": "Fighter",
+      "subclass": null,
+      "level": 1,
+      "species": "Human",
+      "background": "Soldier",
+      "abilities": {
+        "str": 15,
+        "dex": 13,
+        "con": 14,
+        "int": 8,
+        "wis": 12,
+        "cha": 10
+      },
+      "proficiencyBonus": 2,
+      "saves": [
+        "str",
+        "con"
+      ],
+      "skills": [
+        "Athletics",
+        "Perception",
+        "Intimidation",
+        "Survival"
+      ],
+      "ac": 18,
+      "hp": 12,
+      "maxHp": 12,
+      "tempHp": 0,
+      "hitDice": "1d10",
+      "hitDiceRemaining": 1,
+      "speed": 30,
+      "initiative": 1,
+      "equipment": [
+        {
+          "name": "Chain mail",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Longsword",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Shield",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Javelin",
+          "qty": 4,
+          "equipped": false
+        },
+        {
+          "name": "Dungeoneer's pack",
+          "qty": 1,
+          "equipped": false
+        }
+      ],
+      "gold": 15,
+      "conditions": [],
+      "features": [
+        "Second Wind",
+        "Weapon Mastery (Longsword)",
+        "Fighting Style"
+      ],
+      "spells": {
+        "cantrips": [],
+        "known": [],
+        "slots": {}
+      },
+      "notes": "Front line. Takes the hits so the other one does not have to."
+    },
+    {
+      "name": "Bram",
+      "player": "GF",
+      "class": "Cleric",
+      "subclass": null,
+      "level": 1,
+      "species": "Dwarf",
+      "background": "Acolyte",
+      "abilities": {
+        "str": 13,
+        "dex": 12,
+        "con": 14,
+        "int": 8,
+        "wis": 15,
+        "cha": 10
+      },
+      "proficiencyBonus": 2,
+      "saves": [
+        "wis",
+        "cha"
+      ],
+      "skills": [
+        "Religion",
+        "Insight",
+        "Medicine",
+        "Persuasion"
+      ],
+      "ac": 16,
+      "hp": 10,
+      "maxHp": 10,
+      "tempHp": 0,
+      "hitDice": "1d8",
+      "hitDiceRemaining": 1,
+      "speed": 30,
+      "initiative": 1,
+      "equipment": [
+        {
+          "name": "Scale mail",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Mace",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Shield",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Holy symbol",
+          "qty": 1,
+          "equipped": true
+        },
+        {
+          "name": "Priest's pack",
+          "qty": 1,
+          "equipped": false
+        }
+      ],
+      "gold": 15,
+      "conditions": [],
+      "features": [
+        "Spellcasting",
+        "Divine Order (Protector)"
+      ],
+      "spells": {
+        "cantrips": [
+          "Sacred Flame",
+          "Guidance",
+          "Light"
+        ],
+        "known": [
+          "Cure Wounds",
+          "Bless",
+          "Guiding Bolt",
+          "Shield of Faith"
+        ],
+        "slots": {
+          "1": {
+            "max": 2,
+            "used": 0
+          }
+        }
+      },
+      "notes": "The only healing you will have. Cure Wounds is touch range."
+    }
+  ]
+}
