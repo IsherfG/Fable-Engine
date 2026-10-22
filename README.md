@@ -191,6 +191,7 @@ a ~6 MB native desktop app (no Node, no HTTP server).
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Turn loop, tools, data model, why each piece exists |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | What is next, and what "a full campaign" requires |
 | [docs/MIGRATION-TINYJS.md](docs/MIGRATION-TINYJS.md) | Port to a native desktop window |
+| [docs/HOSTING.md](docs/HOSTING.md) | Why it is local-only, and what remote play would take |
 | [campaign/RESEARCH.md](campaign/RESEARCH.md) | Verified Heroes of the Borderlands facts and sources |
 
 ---

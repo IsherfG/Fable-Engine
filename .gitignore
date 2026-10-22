@@ -34,3 +34,8 @@ npm-debug.log*
 
 # Local overrides: put machine-specific settings here
 config.local.json
+
+# Cloudflare / wrangler artifacts (this app is not deployable to Workers)
+.wrangler/
+.dev.vars
+.wrangler.toml
